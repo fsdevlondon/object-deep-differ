@@ -1,6 +1,6 @@
 {
   "name": "object-deep-differ",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Return the deep differnce between two objects",
   "main": "index.js",
   "author": "Marc Herrero Rivelles <rivelles.marc@gmail.com>",
