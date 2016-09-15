@@ -1,0 +1,38 @@
+{
+  "name": "object-deep-differ",
+  "version": "0.1.0",
+  "description": "Return the deep differnce between two objects",
+  "main": "index.js",
+  "author": "Marc Herrero Rivelles <rivelles.marc@gmail.com>",
+  "license": "MIT",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fsdevlondon/object-deep-differ.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fsdevlondon/object-deep-differ/issues"
+  },
+  "homepage": "https://github.com/fsdevlondon/object-deep-differ#readme",
+  "keywords": [
+    "object-diff",
+    "object-differ",
+    "deep-diff",
+    "deep-differ",
+    "diff",
+    "differ"
+  ],
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^3.4.0",
+    "mocha": "^2.3.3"
+  }
+}
