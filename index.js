@@ -15,7 +15,9 @@ const diff = function (defaults, source) {
 
       } else {
 
-        if (typeof defaults[ key ] === 'undefined') {
+        if ((typeof defaults[ key ] === 'undefined') ||
+            (value === null && defaults[ key ] !== null)) {
+
           result[ key ] = value
 
         } else {
