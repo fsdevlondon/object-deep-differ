@@ -1,13 +1,19 @@
-const _ = require('lodash')
+'use strict'
 
-const diff = function (defaults, source) {
-  const result = _.cloneDeep(source)
+const map = require('lodash/map')
+const isArray = require('lodash/isArray')
+const cloneDeep = require('lodash/cloneDeep')
+const isEmpty = require('lodash/isEmpty')
+const difference = require('lodash/difference')
 
-  _.map(result, function (value, key) {
+function diff (defaults, source) {
+  const result = cloneDeep(source)
+
+  map(result, function (value, key) {
     if (typeof (value) === 'object') {
 
-      if (_.isArray(value)) {
-        const tmp = _.difference(value, defaults[ key ])
+      if (isArray(value)) {
+        const tmp = difference(value, defaults[ key ])
 
         if (!tmp.length) {
           delete result[ key ]
@@ -23,7 +29,7 @@ const diff = function (defaults, source) {
         } else {
 
           const tmp = diff(defaults[ key ], value)
-          if (_.isEmpty(tmp)) {
+          if (isEmpty(tmp)) {
 
             delete result[ key ]
           } else {
