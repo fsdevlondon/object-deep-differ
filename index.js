@@ -13,7 +13,7 @@ function diff (defaults, source) {
     if (typeof (value) === 'object') {
 
       if (isArray(value)) {
-        const tmp = difference(value, defaults[ key ])
+        const tmp = difference(value, (defaults !== null ? defaults[ key ] : []))
 
         if (!tmp.length) {
           delete result[ key ]
@@ -21,14 +21,15 @@ function diff (defaults, source) {
 
       } else {
 
-        if ((typeof defaults[ key ] === 'undefined') ||
-            (value === null && defaults[ key ] !== null)) {
+        if (defaults !== null &&
+            ((typeof defaults[ key ] === 'undefined') ||
+            (value === null && defaults[ key ] !== null))) {
 
           result[ key ] = value
 
         } else {
 
-          const tmp = diff(defaults[ key ], value)
+          const tmp = diff((defaults !== null ? defaults[ key ] : {}), value)
           if (isEmpty(tmp)) {
 
             delete result[ key ]
@@ -41,7 +42,7 @@ function diff (defaults, source) {
 
     } else {
 
-      if (defaults[ key ] === value) {
+      if (defaults !== null && defaults[ key ] === value) {
         delete result[ key ]
       }
     }
