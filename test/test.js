@@ -1,100 +1,111 @@
-var chai = require('chai')
-var expect = chai.expect
-var diff = require('../index')
+const chai = require('chai')
+const expect = chai.expect
+const differ = require('..')
 
 describe('object deep differ', function () {
 
-  it('should work for objects with numbers', function () {
-    expect(diff).not.to.be.undefined
-
-    var source = { a: 1 }
-    var defaults = { a: 1 }
-    var result = diff(defaults, source)
-    expect(result).to.deep.equal({})
-
-    var source1 = { a: 1 }
-    var defaults1 = { a: 2 }
-    var result = diff(defaults1, source1)
-    expect(result).to.deep.equal(source1)
-
+  it('is not undefined', () => {
+    expect(differ).not.to.be.undefined
   })
 
-  it('should work for objects with strings', function () {
-    expect(diff).not.to.be.undefined
+  context('objects with numbers', () => {
+    it('with no difference', function () {
+      const source = { a: 1 }
+      const defaults = { a: 1 }
+      const result = differ(defaults, source)
+      expect(result).to.deep.equal({})
+    })
 
-    var source = { a: 'hello' }
-    var defaults = { a: 'hello' }
-    var result = diff(defaults, source)
-    expect(result).to.deep.equal({})
+    it('with difference', function () {
+      const source1 = { a: 1 }
+      const defaults1 = { a: 2 }
+      const result = differ(defaults1, source1)
+      expect(result).to.deep.equal(source1)
+    })
+  })
 
-    var source1 = { a: 'hello' }
-    var defaults1 = { a: 'hello world' }
-    var result = diff(defaults1, source1)
-    expect(result).to.deep.equal(source1)
+  context('objects with strings', () => {
+    it('with no difference', function () {
+      const source = { a: 'hello' }
+      const defaults = { a: 'hello' }
+      const result = differ(defaults, source)
+      expect(result).to.deep.equal({})
+    })
+
+    it('with difference', function () {
+      const source1 = { a: 'hello' }
+      const defaults1 = { a: 'hello world' }
+      const result = differ(defaults1, source1)
+      expect(result).to.deep.equal(source1)
+    })
+  })
+
+  context('objects with arrays', () => {
+    it('with no difference', function () {
+      const source = { a: [ 1, 2, 3 ] }
+      const defaults = { a: [ 1, 2, 3 ] }
+      const result = differ(defaults, source)
+      expect(result).to.deep.equal({})
+    })
+
+    it('with difference', function () {
+      const source1 = { a: [ 1, 2, 3, 4, 5 ] }
+      const defaults1 = { a: [ 1, 2, 3 ] }
+      const result = differ(defaults1, source1)
+      expect(result).to.deep.equal(source1)
+    })
   })
 
   it('should work for objects with arrays', function () {
-    expect(diff).not.to.be.undefined
+    const defaultsArr = { a: { b: [ 1, 2, 3 ] } }
 
-    var source = { a: [ 1, 2, 3 ] }
-    var defaults = { a: [ 1, 2, 3 ] }
-    var result = diff(defaults, source)
-    expect(result).to.deep.equal({})
+    const srcArr = { a: { b: [ 1, 2, 3 ] } }
+    const srcArr1 = { a: { b: [ 1, 2, 3, 4, 5 ] } }
 
-    var source1 = { a: [ 1, 2, 3, 4, 5 ] }
-    var defaults1 = { a: [ 1, 2, 3 ] }
-    var result = diff(defaults1, source1)
-    expect(result).to.deep.equal(source1)
-  })
-
-  it('should work for objects with objects', function () {
-    expect(diff).not.to.be.undefined
-    // test for object array
-    var defaultsArr = { a: { b: [ 1, 2, 3 ] } }
-
-    var srcArr = { a: { b: [ 1, 2, 3 ] } }
-    var srcArr1 = { a: { b: [ 1, 2, 3, 4, 5 ] } }
-
-    var result = diff(defaultsArr, srcArr)
-    var result1 = diff(defaultsArr, srcArr1)
+    const result = differ(defaultsArr, srcArr)
+    const result1 = differ(defaultsArr, srcArr1)
 
     expect(result).to.deep.equal({})
     expect(result1).to.deep.equal(srcArr1)
+  })
 
-    // test for object number
-    var defaultsNum = { a: { b: 1 } }
+  it('should work for objects with numbers', () => {
+    const defaultsNum = { a: { b: 1 } }
 
-    var sourceNum = { a: { b: 1 } }
-    var sourceNum1 = { a: { b: 2 } }
+    const sourceNum = { a: { b: 1 } }
+    const sourceNum1 = { a: { b: 2 } }
 
-    var result = diff(defaultsNum, sourceNum)
-    var result1 = diff(defaultsNum, sourceNum1)
+    const result = differ(defaultsNum, sourceNum)
+    const result1 = differ(defaultsNum, sourceNum1)
 
     expect(result).to.deep.equal({})
     expect(result1).to.deep.equal(sourceNum1)
+  })
 
-    // test for object string
-    var defaultsStr = { a: { b: 'hello' } }
+  it('should work for objects with strings', () => {
+    const defaultsStr = { a: { b: 'hello' } }
 
-    var sourceStr = { a: { b: 'hello' } }
-    var sourceStr1 = { a: { b: 'hello world' } }
+    const sourceStr = { a: { b: 'hello' } }
+    const sourceStr1 = { a: { b: 'hello world' } }
 
-    var result = diff(defaultsStr, sourceStr)
-    var result1 = diff(defaultsStr, sourceStr1)
+    const result = differ(defaultsStr, sourceStr)
+    const result1 = differ(defaultsStr, sourceStr1)
 
     expect(result).to.deep.equal({})
     expect(result1).to.deep.equal(sourceStr1)
 
-    // test for object object
-    var defaultsObj = { a: { b: { c: 'hello' } } }
+  })
 
-    var sourceObj = { a: { b: { c: 'hello' } } }
-    var sourceObj1 = { a: { b: { c: 'hello world' } } }
-    var sourceObj2 = { a: { d: { e: 'hello world' } } }
+  it('should work for objects with objects', () => {
+    const defaultsObj = { a: { b: { c: 'hello' } } }
 
-    var result = diff(defaultsObj, sourceObj)
-    var result1 = diff(defaultsObj, sourceObj1)
-    var result2 = diff(defaultsObj, sourceObj2)
+    const sourceObj = { a: { b: { c: 'hello' } } }
+    const sourceObj1 = { a: { b: { c: 'hello world' } } }
+    const sourceObj2 = { a: { d: { e: 'hello world' } } }
+
+    const result = differ(defaultsObj, sourceObj)
+    const result1 = differ(defaultsObj, sourceObj1)
+    const result2 = differ(defaultsObj, sourceObj2)
 
     expect(result).to.deep.equal({})
     expect(result1).to.deep.equal(sourceObj1)
@@ -121,7 +132,7 @@ describe('object deep differ', function () {
       }
     }
 
-    const diffd = diff(prev, curr)
+    const diffd = differ(prev, curr)
 
     expect(
       diffd
@@ -155,7 +166,7 @@ describe('object deep differ', function () {
       }
     }
 
-    const diffd = diff(prev, curr)
+    const diffd = differ(prev, curr)
 
     expect(
       diffd
@@ -186,7 +197,7 @@ describe('object deep differ', function () {
     }
 
     expect(
-      diff(prev, curr)
+      differ(prev, curr)
     ).to.eql({
       first: {
         second: {
@@ -212,7 +223,7 @@ describe('object deep differ', function () {
     }
 
     expect(
-      diff(prev, curr)
+      differ(prev, curr)
     ).to.eql({
       first: {
         update: 'you'
@@ -235,7 +246,7 @@ describe('object deep differ', function () {
     }
 
     expect(
-      diff(prev, curr)
+      differ(prev, curr)
     ).to.eql({
       first: {
         additional: 'property'
